@@ -13,6 +13,7 @@ async function setUserProfile(email, username) {
     await setDoc(doc(db, "Users", `${email}`), {
         Username: `${username}`
     })
+    return true
 }   
 
 export async function getUser(email) {
@@ -66,11 +67,17 @@ async function signUpFunc(signUpBtn, toRemove){
         submit.innerText = "Submit"
 
         submit.addEventListener("click", async ()=> {
-            createUserWithEmailAndPassword(auth, emailField.value, passwordField.value)
+            setPersistence(auth, browserSessionPersistence)
+            .then(()=> {
+                return (createUserWithEmailAndPassword(auth, emailField.value, passwordField.value)
                 .then(async (userCredential) => {
-                    await setUserProfile(emailField.value, usernameField.value)
-                    console.log((await getUser(emailField.value)).data())
-                    document.location.href = "../public/index.html"
+                    console.log(userCredential)
+                    await setUserProfile(emailField.value, usernameField.value).then(async () => {
+                        console.log((await getUser(emailField.value)))
+                        document.location.href = "../public/index.html"
+                    }).catch ((error) => {
+                        console.log(error)
+                    })
                 }).catch((error) => {
                     const errorCode = error.code;
                     switch (errorCode) {
@@ -84,7 +91,11 @@ async function signUpFunc(signUpBtn, toRemove){
                             alert("Please Enter a Name")
                             break;
                     }
-                })
+            }))})
+            .catch((error) => {
+                const error2 = error.code
+                console.log(error2)
+            })
         })
 
         loginContainer.appendChild(inputContainer)
@@ -142,7 +153,6 @@ async function signInFunc(signInBtn, toRemove){
         let registerLink = document.createElement("button")
         registerLink.classList.add("registerLink")
         registerLink.innerText = "Register?"
-        
         registerLink.addEventListener("click", async () => {
             await signUpFunc(registerLink, inputContainer)
         })
@@ -195,13 +205,6 @@ async function loginLanding() {
     console.log(userAuth)
     await auth.signOut()
 
-    setUserProfile()
-
-    const usersCol = collection(db, 'Users')
-    const usersSnapshot = await getDocs(usersCol)
-    const userList = usersSnapshot.docs.map( doc => doc.data())
-    console.log(userList)
-
     const landingPageContainer = document.createElement("section")
     landingPageContainer.classList.add("lpContainer")
 
@@ -227,15 +230,16 @@ async function loginLanding() {
     signUpFunc(signUpBtn, landingPageContainer)
     signInFunc(signInBtn, landingPageContainer)
 
-    onAuthStateChanged(auth, (user) => {
-        if (user !== null) {
-            console.log(`${user.displayName, user.uid} has logged in`)
-            console.log(auth)
-            //alert(`${user.displayName} has logged in`)
-        } else {
-            console.log("User has logged out")
-        }
-    })
+    // onAuthStateChanged(auth, (user) => {
+    //     if (user !== null) {
+    //         console.log(`${user.displayName, user.uid} has logged in`)
+    //         console.log(auth)
+    //         //alert(`${user.displayName} has logged in`)
+    //         return true
+    //     } else {
+    //         console.log("User has logged out")
+    //     }
+    // })
 }
 
 

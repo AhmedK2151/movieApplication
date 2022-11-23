@@ -27,6 +27,8 @@ async function first(auth) {
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             const uid = user.uid
+            console.log(uid)
+            console.log(await getUser(user.email))
             topRightText.innerText = `User: ${await getUser(user.email).then((Username) => {return Username.Username})}`
         } else {
             topRightText.innerText = "Login"
