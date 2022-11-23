@@ -1,0 +1,99 @@
+* {
+    box-sizing: border-box;
+}
+
+.loginContainer {
+    display: grid;
+    grid-template-columns: 1fr 70vw 1fr;
+    column-gap: 2px;
+    justify-content: center;
+    font-size: x-large;
+}
+
+.lpContainer, .inputContainer, .signUpContainer {
+    grid-column: 2/3;
+    justify-self: center;
+    align-self: center;
+
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 40vh;
+    padding: 5px;
+    justify-content: space-around;
+}
+
+.signInButton, .signUpButton {
+    border: 2px solid lightgray;
+    border-radius: 30px;
+    min-height: 10vh;
+    width: 100%;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+}
+
+.signInButton:hover, .signUpButton:hover {
+    border: 2px solid black;
+}
+
+/* .emailField, .passwordField {
+    border: 2px solid lightgray;
+    border-radius: 30px;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    padding: 3px;
+} */
+
+.loginSubContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.loginSubContainer > label{
+    padding-top: 2px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+
+}
+
+input[type="email"], input[type="password"], input[type="text"] {
+    border: 3px solid lightgray;
+    border-radius: 30px;
+    outline: none;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: x-large;
+    color: black;
+}
+
+input[type="email"]:hover, input[type="password"]:hover, input[type="text"]:hover {
+    border: 3px solid black;
+    border-radius: 8px;
+}
+
+.submitButton {
+    border: 2px solid lightgray;
+    border-radius: 30px;
+    min-height: 5vh;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    font-size: x-large;
+}
+
+.submitButton:hover {
+    border: 2px solid black;
+    border-radius: 8px;
+}
+
+
+@media (width < 600px) {
+    .loginContainer{
+        grid-template-columns: 1fr 80vw 1fr ;
+    }
+}
